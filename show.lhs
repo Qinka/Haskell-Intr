@@ -1,8 +1,8 @@
 \documentclass[UTF8]{ctexart}
 \usepackage{xeCJK}
 \usepackage{listings,color}
-\lstnewenvironment{code}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92}{},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
-\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color{Orange}{},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
+\lstnewenvironment{code}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
+\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
 \long\def\ignore#1{}
 \author{Qinka}
 
