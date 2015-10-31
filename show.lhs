@@ -1,8 +1,8 @@
 \documentclass[UTF8]{ctexart}
 \usepackage{xeCJK}
-\usepackage{listings,color}
+\usepackage{listings,color,attachfile2}
 \lstnewenvironment{code}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
-\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
+\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle={},commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
 \long\def\ignore#1{}
 \author{Qinka}
 
@@ -22,7 +22,8 @@
 
 \maketitle
 这篇文章主要是用于 SSSTA 于 11月1日上午活动中 Haskell 特性演示的文稿，其中该文档是 Literate Haskell 版本。
-可直接使用 GHCi 等编译与使用，但对于 \LaTeX 文档编译，则需要 lhc 编译器的帮助，产生可编译的 \LaTeX 文档。
+这个文件可以直接被GHCi读取，同时可以使用 \LaTeX 的引擎处理，笔者这边使用的是XeLaTeX。
+其中，粉色背景的代码是不会被GHCi等读取，而绿色背景的代码是主要部分。
 以下是引用的模块：
 \begin{code}
 import Prelude -- base
@@ -73,6 +74,6 @@ if 1 == 2 then putStrLn "Unbelievable"
 isEqTwo :: Int -> String
 isEqTwo x = if x == 2 then "Two!" else "It is not two."
 \end{code}
-
+\attachfile{show.lhs}
 
 \end{document}
