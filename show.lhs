@@ -1,5 +1,6 @@
 \documentclass[UTF8]{ctexart}
-\usepackage{xeCJK}
+%\usepackage{xeCJK}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=red,bookmarksnumbered]{hyperref}
 \usepackage{listings,color,attachfile2}
 \lstnewenvironment{code}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
 \lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle={},commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
@@ -159,7 +160,7 @@ map (+1) [1..] :: (Enum b, Num b) => [b]
 \end{spec}
 \subsection{列表内包}
 列表内包是一种构造列表的方式。假设$P_1$ 至 $P_n$是 n个谓词，$A_1$至$A_m$ 是 m 个集合。则一个新的集合
-$$ \{ (e_1,e_2\code e_m) | e_1 \in A_1 \cdot e_m \in A_m , P_1(e_1,e_2\code e_m),P_2(e_1,e_2\code e_m)\codt P_n(e_1,e_2\code e_m)\}$$
+$$ \{ (e_1,e_2\cdot e_m) | e_1 \in A_1 \cdot e_m \in A_m , P_1(e_1,e_2\cdot e_m),P_2(e_1,e_2\cdot e_m)\cdot P_n(e_1,e_2\cdot e_m)\}$$
 而 Haskell 有类似的语法，如构造一个所有元素不能被13整除的偶数列表。
 \begin{spec}
 Prelude> [x |x<-[2,4..] , mod x 13 /= 0]
