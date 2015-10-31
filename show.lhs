@@ -15,7 +15,13 @@
 > module Example
 >     (
 >     isEqOne,
->     isEqTwo
+>     isEqTwo,
+>     stringToBool,
+>     caseEx1,
+>     caseEx2,
+>     guardEx1,
+>     sumEx,
+>     addOneEx,
 >     ) where
 
 }
@@ -74,6 +80,143 @@ if 1 == 2 then putStrLn "Unbelievable"
 isEqTwo :: Int -> String
 isEqTwo x = if x == 2 then "Two!" else "It is not two."
 \end{code}
-\attachfile{show.lhs}
 
+\subsubsection{casee-of}
+Haskell 中有类似于 C 等语言中的 switch 语句---- “case-of” 语句，和 C 语言种不同的是， switch 只接受整数的条件参数。而 Haskell
+则接受各种数据类型。例子如下：
+\begin{code}
+stringToBool :: String -> Bool
+stringToBool x = case x of
+  "True" -> True
+  _ -> False
+\end{code}
+其中 $->$ 表示如果当前的表达式匹配成功之后执行的运算，事实上本质是函数。而 \_ 这个是指带任何情况都适配同事忽略它是啥。而如果只是给出一个“变量”，则其也会
+成功适配，而同事吧数据给了变量。
+
+更多的例子：
+\begin{code}
+caseEx1 :: Num a => [a] -> a
+caseEx1 x = case x of
+  (y:ys) -> y + caseEx1 ys
+  _ -> 0
+\end{code}
+\begin{code}
+caseEx2 :: (Show a) =>  Maybe a -> String
+caseEx2 x = case x of
+  Just p -> show p
+  Nothing -> "nothing"
+\end{code}
+在第二个例子中，\verb"Mabye" \verb"Just" \verb"Nothing" 是一起的，是一种“奇特”的东西，对于学过 C 等语言的人来说。有点像模板。之后
+我们会再次提起这个神奇而强大的东西。同时，case-of 这样的代码在可以换成另一种方式：
+\begin{spec}
+caseEx2 (Just x) = show x
+caseEx2 Nothing = "Nothing"
+\end{spec}
+至于具体细节会在之后提到。
+\subsubsection{“沈文元”}
+你们可能会奇怪，沈文元是谁。但是不得不说，其实是守门员
+\footnote{这其实是一个笑话，有个人找一个叫沈文元的人，结果应答的那个人一直是听成的是守门员。}
+。不，事实上是守卫表达式。先看一个例子：
+\begin{code}
+guardEx1 ::(Eq a, Num a)  => a -> Bool
+guardEx1 x
+  | x == 1 = True
+  | otherwise = False
+\end{code}
+其中，otherwise 是 一个返回值为 True 的函数，而门卫 之后所更随的代码则是 一个条件表达式，如果为真则执行后面的内容。
+\subsection{递归与高阶函数}
+Haskell 是不纯在循环体的 \footnote{不存在像 C 等语言那样的循环体，当然也不存在变量这样的东西。}，而 Haskell 确实是图灵完备的，
+这就意味着 Haskell 可以做到其他语言可以做到的事。下面是个例子：
+\begin{code}
+sumEx :: (Eq a, Num a) => [a] -> a
+sumEx [] = 0
+sumEx (x:xs) = x + sumEx xs
+\end{code}
+这个递归函数，只定义了两件事：什么时候停止与在不停止的时候要干什么。
+
+对于高阶函数，就是指一个函数可以像数据一样，传入一个函数与从函数中返回。例子如下：
+\begin{code}
+addOneEx :: Num a => [a] -> [a]
+addOneEx = map (+1)
+\end{code}
+其中，map 是一个函数，将会将传入的作为参数的函数\footnote{本例中是 (+1) 其类型绑定是 Num a => a -> a。}，作用于“第二个参数”
+\footnote{这里加引号的原因是在 Haskell 中，函数式 curry 化的。}的每个元素。而这个函数的作用将一个数的列表中的每个元素加一。
+而这个表达式则是将一个返回的函数赋值给了 addOneEx。
+\subsection{curry 化函数}
+curry 化函数的结果，函数的参数不一定要一次性全部提供，如果提供不完全，则会产生一个新的函数。以下是一个运行结果。
+以下是对几个不同函数的绑定类型的查看。
+\begin{spec}
+Prelude> :t map
+map :: (a -> b) -> [a] -> [b]
+Prelude> :t (+)
+(+) :: Num a => a -> a -> a
+Prelude> :t (+1)
+(+1) :: Num a => a -> a
+Prelude> :t map (+1)
+map (+1) :: Num b => [b] -> [b]
+Prelude> :t map (+1) [1..]
+map (+1) [1..] :: (Enum b, Num b) => [b]
+\end{spec}
+\subsection{列表内包}
+列表内包是一种构造列表的方式。假设$P_1$ 至 $P_n$是 n个谓词，$A_1$至$A_m$ 是 m 个集合。则一个新的集合
+$$ \{ (e_1,e_2\code e_m) | e_1 \in A_1 \cdot e_m \in A_m , P_1(e_1,e_2\code e_m),P_2(e_1,e_2\code e_m)\codt P_n(e_1,e_2\code e_m)\}$$
+而 Haskell 有类似的语法，如构造一个所有元素不能被13整除的偶数列表。
+\begin{spec}
+Prelude> [x |x<-[2,4..] , mod x 13 /= 0]
+[2,4,6,8,10,12,14,16,18,20,22,24,28,30,32,34,36,38,40,42,44,46,48,50,54,56,58,60,62,64,66,68,70,72,74,76,80,82,84,86,88,90,92,94,96,98,100,102,106,108,110,112,114,116,118,120,122,124,Interrupted.
+\end{spec}
+由于这个列表构造出来的是无限长度的列表，则需要手动终止。其中的某些细节将在之后展示。
+\subsection{其他基本的特性}
+Haskell 中还存在其他的特性其中值得一体的是 QuickCheck 与类型系统。这些东西就留给给位自己查阅在线资料了。
+\section{高级特性--求值策略}
+在此我们只简单介绍并不深入探讨。
+\subsection{惰性求值}
+Haskell 默认的是惰性求值。也就是说一个参数的值，只是会在需要的时候进行求解。
+\footnote{其中使用到的 :sprint 命令是在 GHCi 中查看一个“变量”的“内存”是什么样的，fst 是返回二元组的第一个元素的函数。}
+\begin{spec}
+Prelude> let x = 1 :: Int
+Prelude> let y = (x+x,x+x+x)
+Prelude> :sprint x
+x = 1
+Prelude> :sprint y
+y = (_,_)
+Prelude> fst y
+2
+Prelude> :sprint y
+y = (2,_)
+\end{spec}
+其中 y 是一个 二元组，其后一个元素在没有被用到的情况下是不会被求值的。
+再来一个例子：
+\begin{spec}
+Prelude> let x = 1+1::Int
+Prelude> :sprint x
+x = _
+Prelude> x
+2
+Prelude> :sprint x
+x = 2
+\end{spec}
+\subsection{弱首范式[Weak Head Normal Form]}
+弱首范式与首范式\footnote{Head Normal Form}，范式\footnote{Normal Form。这些翻译参照了 《Haskell 并发与并行编程》一书，该书中文版由 O'Reilly 出版社授权人民邮电出版社 出版。}
+之间存在着千丝万缕的关系，在 Haskell 中，这里就不介绍了。这里只展示一个 Haskell 中的现象
+\footnote{seq 函数为一个求值函数。}
+。
+\begin{spec}
+Prelude> let xs = map (2*) [1..10] :: [Int]
+Prelude> :sprint xs
+xs = _
+Prelude> length xs
+10
+Prelude> :sprint xs
+xs = [_,_,_,_,_,_,_,_,_,_]
+Prelude> let ys = map (2*) [1..10] :: [Int]
+Prelude> seq ys ()
+()
+Prelude> :sprint ys
+ys = _ : _
+\end{spec}
+这里求值的结果，准确的说是内存里面，和 C 等语言的结果是不同的。
+
+这里直接说结论了，这几种求值策略是的 Haskell 重要特性，可以提升运行效率,同时与“响应式编程”有着密切的关系。
+\attachfile{show.lhs}
 \end{document}
