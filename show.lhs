@@ -1,11 +1,17 @@
-\documentclass[UTF8]{ctexart} % 对于不适用 ctex 的，可以使用 article 再加上 xeCJK（或 CJK）
+\documentclass[UTF8]{ctexart} % 对于不使用 ctex 的，可以使用 article 再加上 xeCJK（或 CJK）
 %
 %\usepackage{xeCJK}
 %
+\usepackage{xltxtra} 
+\usepackage{amsmath}
 \usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=red,bookmarksnumbered]{hyperref}
 \usepackage{listings,color,attachfile2}
-\lstnewenvironment{code}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
-\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle={},commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{}
+
+\newcounter{mycnt}
+\setcounter{mycnt}{19}
+
+\lstnewenvironment{code}{\lstset{firstnumber=last,language=Haskell,breaklines,backgroundcolor=\color[rgb]{0.84,1.00,0.92},basicstyle=\sffamily,keywordstyle=\bfseries,commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{\setcounter{mycnt}{\value{lstnumber}}}
+\lstnewenvironment{spec}{\lstset{language=Haskell,breaklines,backgroundcolor=\color[rgb]{1.00,0.50,1.00},basicstyle=\sffamily,keywordstyle={},commentstyle=\rmfamily\itshape,escapechar=~,flexiblecolumns,numbers=left,numberstyle=\tiny,frame=trBL,label=sourceCtr}}{\setcounter{lstnumber}{\value{mycnt}}}
 \long\def\ignore#1{}
 \author{Qinka\\qinka@live.com}
 
@@ -34,6 +40,9 @@
 }
 
 \maketitle
+
+
+
 
 这篇文章主要是用于 SSSTA 于 11月1日上午活动中 Haskell 特性演示的文稿，其中该文档是 Literate Haskell 格式。
 这个文件可以直接被GHCi \footnote{Glasgow Haskell Compiler interaction} 读取，同时可以使用 \LaTeX 的引擎处理，笔者这边使用的是 \XeLaTeX 引擎 \footnote{直接 按照编译 .tex 文件的方法编译即可}。
